@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>TTSS Kraków - Mapa</title>
-<meta charset="utf-8" />
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
-<link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css" />
-<link rel="stylesheet" href="map.css" type="text/css" />
+    <title>TTSS Kraków - Mapa</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.1.0/css/ol.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="map.css" type="text/css" />
 </head>
+
 <body>
-<div id="map">
-<div id="title" class="ol-unselectable ol-control"><a href="/">TTSS Kraków</a></div>
-<div id="fail" class="ol-unselectable ol-control"></div>
-<div id="popup"></div>
-</div>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
-<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>
-<script src="https://openlayers.org/en/v4.1.0/build/ol.js" integrity="sha384-FkrvSU9IkctjoF6eTvw82jZvg4Rn04zw5X2nCQnYF+vT8IbAY+DJ23IIoaVDtiMe" crossorigin="anonymous"></script>
-<script tyle="text/javascript" src="lang_pl.js" id="lang_script"></script>
-<script tyle="text/javascript" src="common.js"></script>
-<script tyle="text/javascript" src="map.js"></script>
+    <div id="map">
+        <div id="title" class="ol-unselectable ol-control"><a href="/">TTSS Kraków</a></div>
+        <div id="fail" class="ol-unselectable ol-control"></div>
+        <div id="popup"></div>
+    </div>
+    <div id="filters" class="panel panel-default">
+        <div id="filters-btn" class="panel-body"><span class="fa fa-bars"></span></div>
+        <div id="filters-body" class="panel-body" style="display: none;">
+            <div class="row" id="typefilter-hdr">Filtruj po modelu</div>
+            <div class="row" id="typefilter-body" style="display: none;">
+                <input type="checkbox" checked="checked" class="typefilter-checkbox" id="typefilter-all" /> <label for="typefilter-all">Wszystkie</label><br />
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>
+    <script src="https://openlayers.org/en/v4.1.0/build/ol.js" integrity="sha384-FkrvSU9IkctjoF6eTvw82jZvg4Rn04zw5X2nCQnYF+vT8IbAY+DJ23IIoaVDtiMe"
+        crossorigin="anonymous"></script>
+    <script tyle="text/javascript" src="lang_pl.js" id="lang_script"></script>
+    <script tyle="text/javascript" src="common.js"></script>
+    <script tyle="text/javascript" src="map.js"></script>
 </body>
+
 </html>

@@ -1,5 +1,5 @@
 //var ttss_base = 'http://www.ttss.krakow.pl/internetservice';
-var ttss_base = '/proxy.php';
+var ttss_base = 'proxy.php';
 var ttss_refresh = 10000; // 10 seconds
 
 var vehicles_xhr = null;
@@ -21,6 +21,10 @@ var popup = null;
 var fail_element = document.getElementById('fail');
 
 var ignore_hashchange = false;
+
+var filters_shown = false;
+var typefilter_shown = false;
+
 
 function fail(msg) {
 	console.log(msg);
@@ -215,7 +219,7 @@ function featureClicked(feature) {
 		case 'v':
 			var vehicle_type = parseVehicle(feature.get('id'));
 			if(vehicle_type) {
-				addParaWithText(popup_element, vehicle_type.num + ' ' + vehicle_type.type);
+				addParaWithText(popup_element, vehicle_type.num + ' ' + vehicle_type.type.name);
 			}
 		break;
 	}
@@ -270,6 +274,8 @@ function hash() {
 	}
 }
 
+var lastChanged = null;
+
 function init() {
 	if(!window.jQuery) {
 		fail(lang.jquery_not_loaded);
@@ -279,6 +285,59 @@ function init() {
 	$.ajaxSetup({
 		dataType: 'json',
 		timeout: 10000,
+	});
+
+	$('#filters-btn').click(function() {
+		if(filters_shown)
+		{
+			$('#filters-btn > span').removeClass('fa-arrow-up');
+			$('#filters-btn > span').addClass('fa-bars');
+			$('#filters-body').hide('slow');
+		}
+		else
+		{
+			$('#filters-btn > span').removeClass('fa-bars');
+			$('#filters-btn > span').addClass('fa-arrow-up');
+			$('#filters-body').show('slow');
+		}
+
+		filters_shown = !filters_shown;
+	});
+
+	$('#typefilter-hdr').click(function() {
+		if(typefilter_shown)
+		{
+			$('#typefilter-body').hide('slow');
+		}
+		else
+		{
+			$('#typefilter-body').show('slow');
+		}
+
+		typefilter_shown = !typefilter_shown;
+	});
+
+	for(var tp in VEHICLE_TYPES)
+	{
+		var type = VEHICLE_TYPES[tp];
+		$('#typefilter-body').append('<input type="checkbox" class="typefilter-checkbox" id="typefilter-' + type.id + '" /> <label for="typefilter-' + type.id + '">' + type.name + '</label><br />');
+	}
+
+	$('.typefilter-checkbox').change(function(e){
+		var allChecked = $('#typefilter-all')[0].checked;
+		for(var featureid in vehicles_source.getFeatures())
+		{
+			var feature = vehicles_source.getFeatures()[featureid];
+			var vehicleTypeId = parseVehicle(feature.getId().substr(1)).type.id;
+			if(allChecked || $('#typefilter-' + vehicleTypeId)[0].checked)
+			{
+				showFeatureImage(feature);
+			}
+			else
+			{
+				hideFeatureImage(feature);
+			}
+		}
 	});
 	
 	stops_source = new ol.source.Vector({
@@ -379,6 +438,22 @@ function init() {
 		  
 		fail(lang.error_refresh);
 	}, 1800000);
+}
+
+function hideFeatureImage(feature) {
+	var image = feature.getStyle().getImage();
+	if(image.getOpacity() != 0)
+	{
+		image.setOpacity(0);
+	}
+}
+
+function showFeatureImage(feature) {
+	var image = feature.getStyle().getImage();
+	if(image.getOpacity() != 1)
+	{
+		image.setOpacity(1);
+	}
 }
 
 init();

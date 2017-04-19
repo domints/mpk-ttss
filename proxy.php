@@ -12,6 +12,8 @@ function is_number($str) {
 		);
 }
 
+$MOCK = true;
+
 $base_proxy = 'http://www.ttss.krakow.pl/internetservice';
 $method = [
 	'/services/lookup/autocomplete/json' => [
@@ -102,6 +104,8 @@ foreach($method[$path] as $name => $filter) {
 	$parameters[$name] = $_GET[$name];
 }
 
+if(!$MOCK)
+{
 $result = @file_get_contents($base_proxy . $path . '?' . http_build_query($parameters));
 if(!$result OR $http_response_header[0] != 'HTTP/1.1 200 OK') {
 	header('HTTP/1.1 503 Service Unavailable');
@@ -109,6 +113,27 @@ if(!$result OR $http_response_header[0] != 'HTTP/1.1 200 OK') {
 		die($http_response_header[0]);
 	} else {
 		die('Unknown error');
+	}
+}
+}
+else
+{
+	include 'proxy_mock.php';
+	if($path == '/geoserviceDispatcher/services/vehicleinfo/vehicles') 
+	{
+		$result = $VEHICLES_MOCK;
+	}
+	else if($path == '/geoserviceDispatcher/services/stopinfo/stops')
+	{
+		$result = $STOPS_MOCK;
+	}
+	else if($path == '/geoserviceDispatcher/services/stopinfo/stopPoints')
+	{
+		$result = $STOPPOINTS_MOCK;
+	}
+	else
+	{
+		echo $path;
 	}
 }
 
